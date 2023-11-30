@@ -7,7 +7,7 @@ preview(vid);
 pause(1);
 
 imRGB=getsnapshot(vid);
-% imRGB=imread('capture.bmp');
+imRGB=imread('capture.bmp');
 imread('capture.bmp');
 stop(vid);
 delete(vid);
@@ -17,7 +17,7 @@ imwrite(imRGB,'capture.bmp','bmp');
 subplot(3,3,1)
 imshow(imRGB)
 
-[BW,maskedRGBImage] = skinMask(imRGB);
+[BW,maskedRGBImage] = gloveMask(imRGB);
 subplot(3,3,2);
 imshow(BW);
 
