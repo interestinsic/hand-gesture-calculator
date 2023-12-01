@@ -1,44 +1,43 @@
-clearvars;
-vid=videoinput('winvideo',1);
+vid = videoinput('winvideo',1);
 set(vid,'ReturnedColorSpace','rgb');
 start(vid);
-preview(vid);
-
+% preview(vid);
+ 
 pause(1);
 
-imRGB=getsnapshot(vid);
-imRGB=imread('capture.bmp');
-imread('capture.bmp');
+im = getsnapshot(vid);
 stop(vid);
 delete(vid);
 
-imwrite(imRGB,'capture.bmp','bmp');
+% imwrite(imRGB,'capture.bmp','bmp');
+% imRGB = imread('capture.bmp');
 
 subplot(3,3,1)
-imshow(imRGB)
+imshow(im)
 
-[BW,maskedRGBImage] = gloveMask(imRGB);
+[im,maskedRGBImage] = gloveMask(im);
 subplot(3,3,2);
-imshow(BW);
+imshow(im);
 
-BW = imfill(BW,"holes");
-BW=imopen(BW,strel('square',10));
+im = imfill(im, 8, "holes");
 subplot(3,3,3);
-imshow(BW);
+imshow(im);
 
-BWH = imopen(BW,strel('disk',80));
+im2 = imopen(im,strel(template3));
 subplot(3,3,4);
-imshow(BWH);
+imshow(im2);
 
-BWF = BW - BWH;
-BWF=imopen(BWF,strel('disk',17));
+im = im - im2;
 subplot(3,3,5);
-imshow(BWF);
+imshow(im);
 
-
-[labels,numlabels]=bwlabel(BWF);
-BWF=label2rgb(labels);
+im = imopen(im, strel('disk', 16));
 subplot(3,3,6);
-imshow(BWF);
+imshow(im);
 
-disp(['Fingers : ',num2str(numlabels)]);
+[labels,numlabels] = bwlabel(im);
+im = label2rgb(labels);
+subplot(3,3,7);
+imshow(im);
+
+disp(['Fingers: ',num2str(numlabels)]);
