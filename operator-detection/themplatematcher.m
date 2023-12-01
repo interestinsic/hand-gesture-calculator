@@ -13,6 +13,8 @@ disp("test2");
 for j = 1:size(BW,2)-size(BW1,2) 
   
 % Construct the correlation map
+imshow(BW(i:i+size(BW1,1)-1,j:j+size(BW1,2)-1));
+
 
 V =corr2(BW(i:i+size(BW1,1)-1,j:j+size(BW1,2)-1),BW1);
 disp(V);
@@ -23,5 +25,4 @@ end
  
 end
 end
-
 
