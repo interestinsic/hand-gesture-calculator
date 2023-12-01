@@ -182,3 +182,4 @@ end
  
 end
 end
+imshow(BW(posx:posx+size(BW1,1)-1,posy:posy+size(BW1,2)-1));
