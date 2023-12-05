@@ -9,9 +9,9 @@ V=uint32(0);
 posx=uint32(0);
 posy=uint32(0);
 
-for i =1:100:size(BW,1)
+for i =1:100:maxx
 
-for j =1:100:size(BW,2)
+for j =1:100:maxy
   
 % Construct the correlation map
 
