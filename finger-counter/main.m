@@ -1,43 +1,46 @@
+plusTemp = imread("plusBW.bmp");
+fingerTemp = imread("template3.bmp");
+
 vid = videoinput('winvideo',1);
 set(vid,'ReturnedColorSpace','rgb');
 start(vid);
-% preview(vid);
- 
-pause(1);
+preview(vid);
 
-im = getsnapshot(vid);
+while true
+
+    pause(3);
+    im = getsnapshot(vid);
+
+    imwrite(im,'tempcapture.bmp','bmp');
+    im = imread('tempcapture.bmp');
+
+    subplot(3,4,1);
+    imshow(im);
+    title('RGB image');
+    
+    im = gloveMask3(im);
+    subplot(3,4,2);
+    imshow(im);
+    title('BW image');
+    
+    im = imfill(im, 8, "holes");
+    subplot(3,4,3);
+    imshow(im);
+    title('Filled holes');
+
+    corr = tempMatcher(im, plusTemp);
+    if corr > 0.8
+        fprintf('plus sign, corr: %d\n', corr);
+    else
+        numFingers = countFingers(im, fingerTemp);
+        if numFingers > 0
+            fprintf('%d fingers\n', numFingers);
+        else
+            disp("nothing detected, end of sequence\n");
+            break;
+        end
+    end
+end
+
 stop(vid);
 delete(vid);
-
-% imwrite(imRGB,'capture.bmp','bmp');
-% imRGB = imread('capture.bmp');
-
-subplot(3,3,1)
-imshow(im)
-
-[im,maskedRGBImage] = gloveMask(im);
-subplot(3,3,2);
-imshow(im);
-
-im = imfill(im, 8, "holes");
-subplot(3,3,3);
-imshow(im);
-
-im2 = imopen(im,strel(template3));
-subplot(3,3,4);
-imshow(im2);
-
-im = im - im2;
-subplot(3,3,5);
-imshow(im);
-
-im = imopen(im, strel('disk', 16));
-subplot(3,3,6);
-imshow(im);
-
-[labels,numlabels] = bwlabel(im);
-im = label2rgb(labels);
-subplot(3,3,7);
-imshow(im);
-
-disp(['Fingers: ',num2str(numlabels)]);
