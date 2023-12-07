@@ -14,7 +14,11 @@ preview(vid);
 
 while true
 
-    pause(3);
+    for i = 3:-1:1
+        fprintf('Next picture in:  %d\n', i);
+        pause(1);
+    end
+
     im = getsnapshot(vid);
 
     imwrite(im,'tempcapture.bmp','bmp');
@@ -34,7 +38,7 @@ while true
     [r,c] = find(im);
 
     if (size(r, 1) == 0) || (size(c, 1) == 0)
-        disp("nothing detected, end of sequence\n");
+        disp("nothing detected, end of sequence");
         break;
     end
 
@@ -72,9 +76,15 @@ while true
 
     if corr > 0.9
         fprintf('%s sign, corr: %d\n', operands(i), corr);
+        delete(subplot(3,4,9:12));
     else
         numFingers = countFingers(im, fingerTemp);
-        fprintf('%d fingers\n', numFingers);
+        if numFingers > 0
+            fprintf('%d fingers\n', numFingers);
+        else
+            disp("nothing detected, end of sequence");
+            break;
+        end
     end
 end
 
