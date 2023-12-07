@@ -1,13 +1,18 @@
-function [corrFactor, x, y] = tempMatcher(im, temp)
-    
+function [topCorr, x, y] = tempMatcher(im, temp)
+
     topCorr = 0;
-    x = 0;
-    y = 0;
+    x = 1;
+    y = 1;
+    
+    if (size(im,1) < size(temp, 1)) || (size(im,2) < size(temp, 2))
+        return
+    end
     
     % scan every 100 pixels of image first
-    for i = 1:50:size(im,1) - size(temp,1)
+    for i = 1:20:size(im,1) - size(temp,1)
         for j = 1:20:size(im,2) - size(temp,2)
-            corr = calcCorr(im,temp,i,j);
+            emplaced = im(i:i+size(temp, 1) - 1, j:j+size(temp, 2) - 1);
+            corr = dice(emplaced, temp);
             if corr > topCorr
                 topCorr = corr;
                 x = i;
@@ -17,23 +22,9 @@ function [corrFactor, x, y] = tempMatcher(im, temp)
     end
     
     % scan more precisely, based on highest correlation
-    [x, y, topCorr] = search(20, x, y, im, temp, topCorr);
-    [x, y, topCorr] = search(8, x, y, im, temp, topCorr);
+    [x, y, topCorr] = search(10, x, y, im, temp, topCorr);
+    [x, y, topCorr] = search(5, x, y, im, temp, topCorr);
     [x, y, topCorr] = search(3, x, y, im, temp, topCorr);
-
-    corrFactor = topCorr / (size(temp,1) * size(temp,2));
-end
-
-function corr = calcCorr(im,temp,x,y)
-
-    corr = 0;
-    for i = 1:1:size(temp,1)
-        for j = 1:1:size(temp,2)
-            if (im(x + i, y + j) == temp(i,j))
-                corr = corr + 1;
-            end
-        end
-    end
 end
 
 function [x, y, topCorr] = search(checkrange, x, y, im, temp, topCorr)
@@ -46,7 +37,8 @@ function [x, y, topCorr] = search(checkrange, x, y, im, temp, topCorr)
     
     for i = lowerX:checkrange:upperX
         for j = lowerY:checkrange:upperY
-            corr = calcCorr(im,temp,i,j);
+            emplaced = im(i:i+size(temp, 1) - 1, j:j+size(temp, 2) - 1);
+            corr = dice(emplaced, temp);
             if corr > topCorr
                 topCorr = corr;
                 x = i;
