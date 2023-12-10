@@ -41,7 +41,7 @@ while true
     [r,c] = find(im);
 
     if (size(r, 1) == 0) || (size(c, 1) == 0)
-        disp("nothing detected, end of sequence");
+        disp("Nothing detected, end of sequence");
         break;
     end
 
@@ -78,7 +78,7 @@ while true
     title(sprintf('Highest correlation on image: %.1f%%', corr * 100));
 
     if corr > 0.88
-        fprintf('Operand: %s\n', operands(i));
+        fprintf('Operator: %s\n', operands(i));
         c = char(expression);
         if (size(c) == 0)
             valid = false;
