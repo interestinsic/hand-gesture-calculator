@@ -31,7 +31,7 @@ while true
     imshow(im);
     title('RGB image');
 
-    im = gloveMask3(im);
+    im = gloveMask(im);
     subplot(3,4,2);
     imshow(im);
     title('BW image');
