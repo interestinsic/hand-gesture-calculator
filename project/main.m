@@ -92,9 +92,12 @@ while true
     imshow(imcropped);
     title(sprintf('Highest correlation on image: %.1f%%', corr * 100));
 
+    %check if corr is above a threshold 
     if corr > 0.88
+        %detect an operation
         fprintf('Operator: %s\n', operands(i));
         c = char(expression);
+        %get vadility of expression
         if (size(c) == 0)
             valid = false;
         elseif ~(isstrprop(c(end),'digit'))
