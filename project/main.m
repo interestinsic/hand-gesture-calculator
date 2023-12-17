@@ -114,14 +114,16 @@ while true
         end
     end
 
+    % Display the current arithmetic expression
     fprintf('Current sequence: %s\n\n', expression);
 end
 
+% Stop and delete the video input
 stop(vid);
 delete(vid);
 
+% Display the final result
 disp("Result:");
-
 c = char(expression);
 if (size(c) == 0)
     valid = false;
@@ -129,6 +131,7 @@ elseif ~(isstrprop(c(end),'digit'))
     valid = false;
 end
 
+% Check if expression is valid, display an error message if it's not
 if valid
     disp(eval(expression));
 else
