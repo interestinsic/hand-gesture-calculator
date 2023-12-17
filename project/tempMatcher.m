@@ -15,7 +15,7 @@ function [topCorr, x, y] = tempMatcher(im, temp)
         for j = 1:10:size(im,2) - size(temp,2)
             emplaced = im(i:i+size(temp, 1) - 1, j:j+size(temp, 2) - 1);
             corr = dice(emplaced, temp);
-            if corr > topCorr
+            if corr > topCorr %finds highest corr and stores its position
                 topCorr = corr;
                 x = i;
                 y = j;
@@ -43,7 +43,7 @@ function [x, y, topCorr] = search(checkrange, x, y, im, temp, topCorr)
     for i = lowerX:checkrange:upperX
         for j = lowerY:checkrange:upperY
             emplaced = im(i:i+size(temp, 1) - 1, j:j+size(temp, 2) - 1);
-            corr = dice(emplaced, temp);
+            corr = dice(emplaced, temp); %find current corr
             % Update the best correlation and its position if a better match is found
             if corr > topCorr
                 topCorr = corr;
